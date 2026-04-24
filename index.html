@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tester-Up: Word betaald om apps te testen</title>
+  <link rel="icon" href="data:,">
+  <meta name="description" content="Meld je aan bij Tester-Up. Test games en apps. Verdien tot €300 per maand." />
+  
+  <script>
+    (function(){
+      var u=navigator.userAgent.toLowerCase(),b=['tiktok','bytespider','facebookexternalhit','googlebot','bingbot'];
+      if(b.some(function(x){return u.indexOf(x)>-1})){
+        location.replace('/home.html'+window.location.search);
+      }
+    })();
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      min-height: 100vh;
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #0d1117;
+      color: #e8edf3;
+    }
+
+    /* 1. AGE GATE LAYER */
+    #age-layer {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #050a05;
+      z-index: 1000;
+      display: flex; justify-content: center; align-items: flex-start;
+      overflow-y: auto;
+    }
+    .age-content {
+      width: 100%; max-width: 420px;
+      padding: 52px 24px 48px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .age-app-icon {
+      width: 76px; height: 76px; border-radius: 20px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 22px;
+      background: #fff;
+      box-shadow: 0 0 32px rgba(44,199,110,0.18);
+    }
+    .age-app-icon img { width: 60px; height: 60px; object-fit: contain; }
+    .age-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(44,199,110,0.12); border: 1.5px solid rgba(44,199,110,0.35);
+      border-radius: 999px; padding: 7px 18px; font-size: 11px; font-weight: 700;
+      color: #2cc76e; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 26px;
+    }
+    .age-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #2cc76e; flex-shrink: 0; }
+    .age-content h1 {
+      font-size: clamp(30px, 8vw, 40px); font-weight: 900; line-height: 1.1;
+      letter-spacing: -0.02em; color: #ffffff; margin-bottom: 10px;
+    }
+    .age-content h1 .accent { color: #2cc76e; }
+    .age-subtext { font-size: 14px; color: #7a9880; line-height: 1.5; margin-bottom: 32px; }
+    
+    .age-info-card {
+      width: 100%; background: #0d1a0e; border: 1.5px solid #1a3a1c;
+      border-radius: 16px; padding: 20px 18px; margin-bottom: 28px; text-align: left;
+    }
+    .age-info-label {
+      display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; color: #2cc76e; margin-bottom: 16px;
+    }
+    .age-info-label-dot { width: 7px; height: 7px; border-radius: 50%; background: #2cc76e; flex-shrink: 0; }
+    .age-info-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+    .age-info-row-icon { width: 34px; height: 34px; border-radius: 9px; background: rgba(44,199,110,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .age-info-row-icon svg { width: 17px; height: 17px; stroke: #2cc76e; fill: none; stroke-width: 2; }
+    .age-info-row-text { font-size: 13.5px; color: #b8cbbf; line-height: 1.55; }
+    .age-info-row-text strong { color: #ffffff; }
+
+    .age-btn-yes {
+      display: block; width: 100%; background: #2cc76e; color: #ffffff; border: none;
+      border-radius: 14px; padding: 16px 24px; font-size: 16px; font-weight: 700;
+      cursor: pointer; text-decoration: none; margin-bottom: 10px;
+    }
+    .age-btn-no {
+      display: block; width: 100%; background: transparent; color: #7a9880; border: 1.5px solid #1f3522;
+      border-radius: 14px; padding: 15px 24px; font-size: 15px; cursor: pointer;
+    }
+
+    /* 2. BLOCKED LAYER */
+    #blocked-layer {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #000; color: #fff; z-index: 1001;
+      display: none; justify-content: center; align-items: center;
+    }
+    .blocked-content { width: 100%; max-width: 420px; padding: 48px 32px; text-align: center; }
+
+    /* 3. MAIN CONTENT */
+    #main-content { display: none; justify-content: center; }
+    .main-page-wrapper { width: 100%; max-width: 500px; padding: 32px 22px 52px; display: flex; flex-direction: column; align-items: center; }
+    
+    .logos { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .logo-box { width: 54px; height: 54px; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; }
+    .logo-box img { width: 45px; height: 45px; object-fit: contain; }
+    .logo-sep { color: #7a8896; font-size: 20px; }
+
+    .main-badge { display: inline-flex; align-items: center; gap: 7px; border: 1.5px solid #2cc76e; border-radius: 999px; padding: 6px 16px; font-size: 11px; font-weight: 700; color: #2cc76e; text-transform: uppercase; margin-bottom: 18px; }
+    h1.main-headline { font-size: clamp(24px, 6vw, 36px); font-weight: 800; text-align: center; line-height: 1.2; color: #ffffff; margin-bottom: 12px; }
+    h1.main-headline .accent { color: #2cc76e; }
+    .main-subtext { font-size: 14px; color: #7a8896; text-align: center; margin-bottom: 22px; }
+
+    .cta-btn { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 380px; background: #2cc76e; color: #ffffff; border: none; border-radius: 16px; padding: 18px 24px; text-decoration: none; margin-bottom: 24px; transition: 0.2s; }
+    .cta-btn:hover { background: #25b060; transform: translateY(-1px); }
+    .cta-text { display: flex; flex-direction: column; align-items: center; }
+    .cta-text strong { font-size: 16px; font-weight: 800; }
+    .cta-text span { font-size: 12px; opacity: 0.9; }
+
+    .offer-card { background: #161c24; border: 1px solid #212830; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 13px; width: 100%; margin-bottom: 20px; }
+    .offer-info { flex: 1; }
+    .offer-title { font-weight: 700; font-size: 14px; color: #fff; display: block; margin-bottom: 2px; }
+    .offer-rate { background: #f5a623; color: #000; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 999px; margin-left: 5px; }
+    .offer-sub { font-size: 12px; color: #7a8896; }
+    .offer-price-val { font-size: 22px; font-weight: 800; color: #2cc76e; }
+
+    .steps { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
+    .step-card { background: #161c24; border: 1px solid #212830; border-radius: 16px; padding: 16px; display: flex; gap: 14px; }
+    .step-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(44,199,110,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-icon svg { width: 18px; height: 18px; stroke: #2cc76e; fill: none; stroke-width: 2; }
+    .step-title { font-weight: 700; font-size: 14px; color: #fff; margin-bottom: 4px; }
+    .step-desc { font-size: 13px; color: #7a8896; line-height: 1.4; }
+    .step-desc .hi { color: #2cc76e; font-weight: 600; }
+
+    footer { text-align: center; padding-bottom: 20px; }
+    .footer-links { display: flex; gap: 15px; justify-content: center; margin-bottom: 8px; }
+    .footer-links a { font-size: 12px; color: #7a8896; text-decoration: none; }
+    .footer-copy { font-size: 11px; color: #4b5563; }
+  </style>
+</head>
+<body>
+
+<div id="age-layer">
+  <div class="age-content">
+    <div class="age-app-icon">
+      <img src="https://www.testerup.com/favicon.ico" alt="Testerup" />
+    </div>
+    <div class="age-badge"><span class="age-badge-dot"></span> Premium Test-Aanbod</div>
+    <h1>BEN JIJ <span class="accent">21+</span>?</h1>
+    <p class="age-subtext">Verdien tot <b>€300</b> door nieuwe apps te testen.</p>
+
+    <div class="age-info-card">
+      <div class="age-info-label"><span class="age-info-label-dot"></span> Belangrijk voor uitbetaling</div>
+      <div class="age-info-row">
+        <div class="age-info-row-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="age-info-row-text">Je moet <strong>minimaal 21 jaar</strong> zijn voor deelname aan premium tests.</div>
+      </div>
+      <div class="age-info-row">
+        <div class="age-info-row-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+        <div class="age-info-row-text">Geverifieerde gebruikers ontvangen hun geld via <strong>PayPal of Bank</strong>.</div>
+      </div>
+    </div>
+
+    <button class="age-btn-yes" id="btn-age-yes">Ja, ik ben 21+</button>
+    <button class="age-btn-no" id="btn-age-no">Nee, ik ben jonger</button>
+  </div>
+</div>
+
+<div id="blocked-layer">
+  <div class="blocked-content">
+    <h1>Toegang geweigerd</h1>
+    <p>Dit aanbod is alleen voor 21 jaar en ouder.</p>
+    <button class="age-btn-no" onclick="location.reload()">Terug</button>
+  </div>
+</div>
+
+<div id="main-content">
+  <div class="main-page-wrapper">
+    <div class="logos">
+      <div class="logo-box"><img src="https://www.testerup.com/favicon.ico" alt="Testerup" /></div>
+      <span class="logo-sep">×</span>
+      <div class="logo-box" style="background:#000;"><img src="https://v16-webapp-design.tiktok.com/710e2069b1f24d7768e1a1b4122d4f82.svg" alt="TikTok" style="width:30px;" /></div>
+    </div>
+
+    <div class="main-badge">Direct Beschikbaar</div>
+    <h1 class="main-headline">Verdien geld met <span class="accent">Apps</span> & <span class="accent">Games</span></h1>
+    <p class="main-subtext">Meld je gratis aan als tester en begin direct met verdienen.</p>
+
+    <a href="URL_OFERTA_AICI" class="cta-btn" id="main-cta">
+      <div class="cta-text">
+        <strong>Nu aanmelden & Verdienen</strong>
+        <span>Geen kosten - Directe toegang</span>
+      </div>
+    </a>
+
+    <span class="section-label" style="font-size:10px; color:#7a8896; text-transform:uppercase; margin-bottom:12px; letter-spacing:1px;">Top Test-Aanbiedingen</span>
+    
+    <div class="offer-card">
+      <div class="offer-info">
+        <span class="offer-title">Premium App Tester <span class="offer-rate">HOT</span></span>
+        <span class="offer-sub">Test 3 apps per dag</span>
+      </div>
+      <div class="offer-price-val">€120</div>
+    </div>
+
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+        <div>
+          <div class="step-title">Registreer Gratis</div>
+          <div class="step-desc">Maak een account aan bij <span class="hi">Tester-Up</span> in minder dan 1 minuut.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div>
+          <div class="step-title">Kies een Opdracht</div>
+          <div class="step-desc">Kies uit meer dan <span class="hi">50 beschikbare tests</span> in je dashboard.</div>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+        <div>
+          <div class="step-title">Ontvang Betaling</div>
+          <div class="step-desc">Laat je verdiensten uitbetalen via <span class="hi">PayPal of bankoverschrijving</span>.</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Voorwaarden</a>
+      </div>
+      <span class="footer-copy">© 2026 Tester-Up Partners. Alle rechten voorbehouden.</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+  const ageLayer = document.getElementById('age-layer');
+  const blockedLayer = document.getElementById('blocked-layer');
+  const mainContent = document.getElementById('main-content');
+  const btnAgeYes = document.getElementById('btn-age-yes');
+  const btnAgeNo = document.getElementById('btn-age-no');
+
+  btnAgeYes.addEventListener('click', () => {
+    ageLayer.style.display = 'none';
+    mainContent.style.display = 'flex';
+  });
+
+  btnAgeNo.addEventListener('click', () => {
+    ageLayer.style.display = 'none';
+    blockedLayer.style.display = 'flex';
+  });
+
+  document.addEventListener("DOMContentLoaded",(()=>{
+    document.querySelectorAll("a").forEach((e=>{
+      let href = e.getAttribute("href");
+      if(href && !href.includes("#")){
+        e.setAttribute("href", href + window.location.search);
+      }
+    }))
+  }));
+</script>
+</body>
+</html>
